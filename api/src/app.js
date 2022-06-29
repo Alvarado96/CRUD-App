@@ -9,11 +9,13 @@ const config = require('../knexfile')[env]
 const knex = require('knex')(config)
 
 app.get('/', (request, response) => {
+    console.log(`servicing GET for /`);
     response.set("Access-Control-Allow-Origin", "*");
     response.status(200).send('App root route running');
 })
 
 app.get('/authors', (request, response) => {
+    console.log(`servicing GET for /authors`);
     knex('app_authors')
         .select('*')
         .then(authorRecords => {
@@ -24,4 +26,3 @@ app.get('/authors', (request, response) => {
 })
 
 module.exports = app;
-

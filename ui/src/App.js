@@ -3,7 +3,7 @@ import config from './config'
 
 const ApiUrl = config[process.env.REACT_APP_NODE_ENV || "development"].apiUrl;
 
-function App() {
+const App = () => {
 
   let [names, setNames] = useState([ ]);
 
@@ -17,7 +17,7 @@ function App() {
 
   return (
     <div>
-      App is running - good work: 
+      App is running - good work:
       { names.map(author => author.firstName + " ")}
     </div>
   );
