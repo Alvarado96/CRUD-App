@@ -2,11 +2,25 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
+//Bcrypt code may go here??
+//var db = require('../models');
+var bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 app.use(cors());
 
 const env = process.env.NODE_ENV || 'development'
 const config = require('../knexfile')[env]
 const knex = require('knex')(config)
+
+// Register: storing name, email and passwd and redirecting to blog
+// page of all the blogs i have created
+
+app.post('/register', async (req, res) => {
+    const { firstName, lastName, email, password } = req.body
+    const pwHash = await bcrypt.hash(password, saltRounds)
+    console.log(pwHash);
+})
 
 app.get('/', (request, response) => {
     console.log(`servicing GET for /`);
