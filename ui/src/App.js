@@ -2,6 +2,7 @@ import React from 'react';
 //import config from './config'
 import {BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Register from './User/Register/Register';
+import Signin from './User/Signin/Signin';
 //const ApiUrl = config[process.env.REACT_APP_NODE_ENV || "development"].apiUrl;
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path = '/register' element = {<Register />}/>
+        <Route path = '/signin' element = {<Signin />}/>
       </Routes>
     </Router>
   );

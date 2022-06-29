@@ -61,7 +61,7 @@ const SubmitButton = styled.button`
     font-size: inherit;
 `
 
-const Register = () => {
+const Signin = () => {
     const [userInfo, setUserInfo] = useState({
         firstName: "",
         lastName: "",
@@ -96,20 +96,10 @@ const Register = () => {
     return(
     <PageContainer>
         <PageTitle>Blogger</PageTitle>
-        <FormTitle>Register</FormTitle>
+        <FormTitle>Sign In</FormTitle>
         <RegisterContainer>
         
             <form>
-                <InputSection>
-                    <label htmlFor="">First Name</label>
-                    <input type="text" id="firstName" placeholder="First Name" maxLength="25"
-                           onChange={handleUserInfoChange}/>
-                </InputSection>
-                <InputSection>
-                    <label htmlFor="">Last Name</label>
-                    <input type="text" id="lastName" placeholder="lastName" 
-                             onChange={handleUserInfoChange} maxLength="25"/>
-                </InputSection>
                 <InputSection>
                     <label htmlFor="">Email</label>
                     <input type="text" id="email" placeholder="Email" 
@@ -120,24 +110,19 @@ const Register = () => {
                     <input type="password" id="password" placeholder="password" 
                              onChange={handleUserInfoChange} maxLength="25"/>
                 </InputSection>
-                <InputSection>
-                    <label htmlFor="passwordConfirmation">Confirm Password</label>
-                    <input type="password" id="passwordConfirmation" placeholder="Confirm Password" 
-                             onChange={handleUserInfoChange} maxLength="25"/>
-                </InputSection>
                 <ButtonContainer>
                     <SubmitButton type="submit">
-                        Register
+                        Log In
                     </SubmitButton>
                 </ButtonContainer>
             </form>
             
         </RegisterContainer>
-        <div>Already have an account?<Link to="/signin">Login Here</Link></div>
+        <div>Dont Have an Account?<Link to="/register">Register Here</Link></div>
     </PageContainer>
     
 
     )
 }
 
-export default Register;
+export default Signin;
