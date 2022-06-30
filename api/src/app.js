@@ -68,14 +68,18 @@ app.get('/', (request, response) => {
     response.status(200).send('App root route running');
 })
 
-app.get('/authors', (request, response) => {
-    console.log(`servicing GET for /authors`);
-    knex('app_authors')
-        .select('*')
-        .then(authorRecords => {
-            let responseData = authorRecords.map(author => ({ firstName: author.first_name, lastName: author.last_name}));
-            response.status(200).send(responseData)
-        })
+app.get('/posts/:id', (request, response) => {
+    let currentPosts = knex('posts')
+    .join('users', 'users.id', '=', 'posts.id_user')
+    .select('posts.content', 'posts.title')
+    .where('posts.id_user', '=', parseInt(request.params.id))
+    .then(data => {
+      if(data.length >= 1) {
+         response.status(200).json(data)
+      } else {
+         res.status(404).send(`id: ${request.params.id} not found`)
+       }
+    })
 
 })
 
