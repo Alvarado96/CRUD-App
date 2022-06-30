@@ -54,7 +54,9 @@ app.post("/users", (request, response, next) => {
                 response.status(401).send("Unsuccessful login")
              }else{
                 return jwt.sign(user, SECRET, (error, token) => {
-                   response.status(200).send("Successful login")
+                  // return the id back to the ui to know where to go
+                   response.status(200).send(JSON.stringify(user.id))
+                   //response.json(user)
                 })
              }
           })
@@ -77,7 +79,7 @@ app.get('/posts/:id', (request, response) => {
       if(data.length >= 1) {
          response.status(200).json(data)
       } else {
-         res.status(404).send(`id: ${request.params.id} not found`)
+         response.status(404).send(`id: ${request.params.id} has no blogs yet`)
        }
     })
 

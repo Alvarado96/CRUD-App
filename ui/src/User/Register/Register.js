@@ -94,7 +94,7 @@ const Register = () => {
           body: JSON.stringify(userInfo)
         })
         
-        navigate('/home');
+        navigate('/signin');
         console.log(res);
         
       }

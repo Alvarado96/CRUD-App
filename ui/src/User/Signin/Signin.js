@@ -101,24 +101,31 @@ const Signin = () => {
     const handleSubmit = async (event) => {
         event.preventDefault()
         setButtonClicked(true);
+
         let res = await fetch('http://localhost:8082/signin', {
           method: "POST",
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(userInfo)
         })
         .then(response => {
+            //console.log("RESPONSE AFTER SIGNING IN", response.json())
             if(response.ok) {
                 setIsAuthenticated(true);
-                navigate('/home');
-                return;
+                //navigate('/home/1');
+                return response.json();
             } else if(response.status === 401){
                 setIsAuthenticated(false);
                 console.log("Unsuccessfull login - ui from ui")
+                return;
             }
         })
         .catch(error => console.log('error is', error));
         
-        console.log(res);
+        // res is the id of the user that signed in
+        
+        navigate(`/home/${res}`)
+        
+        console.log("RES VALUE", res);
         
       }
     
