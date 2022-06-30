@@ -2,7 +2,7 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.up = function(knex) {
+ exports.up = function(knex) {
     return knex.schema.createTable("posts", table => {
         table.increments()
         table.integer('id_user')
