@@ -17,7 +17,7 @@ const env = process.env.NODE_ENV || 'development'
 const config = require('../knexfile')[env]
 const knex = require('knex')(config)
 
-// Register: storing name, email and passwd and redirecting to blog
+// Register: storing name, username and passwd and redirecting to blog
 // page of all the blogs i have created
 
 app.post("/users", (request, response, next) => {
@@ -26,10 +26,10 @@ app.post("/users", (request, response, next) => {
        return knex("users").insert({
           firstname: request.body.firstname,
           lastname: request.body.lastname,
-          email: request.body.email,
+          username: request.body.username,
           password: hashedPassword
        })
-       .returning(["id", "email"])
+       .returning(["id", "username"])
        .then(users => {
           response.json(users[0])
        })
@@ -39,7 +39,7 @@ app.post("/users", (request, response, next) => {
 
  app.post("/signin", (request, response, next) => {
     knex("users")
-    .where({email: request.body.email})
+    .where({username: request.body.username})
     .first()
     .then(user => {
        if(!user){

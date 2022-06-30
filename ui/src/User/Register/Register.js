@@ -68,15 +68,17 @@ const SubmitButton = styled.button`
 const Register = () => {
     let navigate = useNavigate();
     const [userInfo, setUserInfo] = useState({
-        firstName: "",
-        lastName: "",
-        email: "",
+        firstname: "",
+        lastname: "",
+        username: "",
         password: "",
     })
 
 
     const handleUserInfoChange = (e) => {
         const { id, value } = e.target
+        console.log('id', id);
+        console.log('value', value)
         setUserInfo((currentState) => ({
             ...currentState,
             [id]: value,
@@ -100,7 +102,7 @@ const Register = () => {
     // // Handling the form submission
     // const handleSubmit = () => {
     //     if(userInfo.firstName === '' || userInfo.lastName === '' ||
-    //        userInfo.email === '' || userInfo.password === '' ||
+    //        userInfo.username === '' || userInfo.password === '' ||
     //        userInfo.passwordConfirmation === '') {
     //             setError(true);
     //     } else {
@@ -119,27 +121,22 @@ const Register = () => {
             <form onSubmit={handleSubmit}>
                 <InputSection>
                     <label htmlFor="">First Name</label>
-                    <input type="text" id="firstName" placeholder="First Name" maxLength="25"
+                    <input type="text" id="firstname" placeholder="First Name" maxLength="25"
                            onChange={handleUserInfoChange}/>
                 </InputSection>
                 <InputSection>
                     <label htmlFor="">Last Name</label>
-                    <input type="text" id="lastName" placeholder="lastName" 
+                    <input type="text" id="lastname" placeholder="Last Name" 
                              onChange={handleUserInfoChange} maxLength="25"/>
                 </InputSection>
                 <InputSection>
-                    <label htmlFor="">Email</label>
-                    <input type="text" id="email" placeholder="Email" 
+                    <label htmlFor="">Username</label>
+                    <input type="text" id="username" placeholder="Username" 
                              onChange={handleUserInfoChange} maxLength="25"/>
                 </InputSection>
                 <InputSection>
                     <label htmlFor="">Password</label>
                     <input type="password" id="password" placeholder="password" 
-                             onChange={handleUserInfoChange} maxLength="25"/>
-                </InputSection>
-                <InputSection>
-                    <label htmlFor="passwordConfirmation">Confirm Password</label>
-                    <input type="password" id="passwordConfirmation" placeholder="Confirm Password" 
                              onChange={handleUserInfoChange} maxLength="25"/>
                 </InputSection>
                 <ButtonContainer>

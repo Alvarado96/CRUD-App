@@ -79,7 +79,7 @@ const Signin = () => {
     const url = useLocation();
     let navigate = useNavigate();
     const [userInfo, setUserInfo] = useState({
-        email: "",
+        username: "",
         password: "",
     })
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -144,8 +144,8 @@ const Signin = () => {
         
             <form onSubmit={handleSubmit}>
                 <InputSection>
-                    <label htmlFor="">Email</label>
-                    <input type="text" id="email" placeholder="Email" 
+                    <label htmlFor="">Username</label>
+                    <input type="text" id="username" placeholder="Username" 
                              onChange={handleUserInfoChange} maxLength="25"/>
                 </InputSection>
                 <InputSection>
