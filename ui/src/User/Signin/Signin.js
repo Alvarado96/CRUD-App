@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import styled from 'styled-components';
 
 const PageContainer = styled.div`
@@ -60,16 +60,32 @@ const SubmitButton = styled.button`
     font-family: inherit;
     font-size: inherit;
 `
+const ErrorContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+    
+    background-color: rgb(255 128 128);    
+`
+
+const WrongMessage = styled.div`
+    text-align: center;
+    color: white;
+    font-family: inherit;
+    font-size: inherit;
+`
 
 const Signin = () => {
+    const url = useLocation();
+    let navigate = useNavigate();
     const [userInfo, setUserInfo] = useState({
-        firstName: "",
-        lastName: "",
         email: "",
         password: "",
-        passwordConfirmation: "",
     })
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [buttonClicked, setButtonClicked] = useState(false);
 
+    console.log(url);
 
     const handleUserInfoChange = (e) => {
         const { id, value } = e.target
@@ -79,6 +95,33 @@ const Signin = () => {
         }));
         console.log(userInfo);
     }
+
+    // Sorry, the password you entered doesn't match what we have on file.
+
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+        setButtonClicked(true);
+        let res = await fetch('http://localhost:8082/signin', {
+          method: "POST",
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(userInfo)
+        })
+        .then(response => {
+            if(response.ok) {
+                setIsAuthenticated(true);
+                navigate('/home');
+                return;
+            } else if(response.status === 401){
+                setIsAuthenticated(false);
+                console.log("Unsuccessfull login - ui from ui")
+            }
+        })
+        .catch(error => console.log('error is', error));
+        
+        console.log(res);
+        
+      }
+    
 
     // // Handling the form submission
     // const handleSubmit = () => {
@@ -99,7 +142,7 @@ const Signin = () => {
         <FormTitle>Sign In</FormTitle>
         <RegisterContainer>
         
-            <form>
+            <form onSubmit={handleSubmit}>
                 <InputSection>
                     <label htmlFor="">Email</label>
                     <input type="text" id="email" placeholder="Email" 
@@ -116,9 +159,10 @@ const Signin = () => {
                     </SubmitButton>
                 </ButtonContainer>
             </form>
-            
         </RegisterContainer>
-        <div>Dont Have an Account?<Link to="/register">Register Here</Link></div>
+        {!isAuthenticated && buttonClicked ? <ErrorContainer><WrongMessage>Sorry the password you entered doesnt match what we have on file</WrongMessage></ErrorContainer>: ''}
+        <div></div>
+        <div>Dont Have an Account? <Link to="/register">Register Here</Link></div>
     </PageContainer>
     
 

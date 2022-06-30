@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from 'styled-components';
 
 const PageContainer = styled.div`
@@ -61,13 +61,17 @@ const SubmitButton = styled.button`
     font-size: inherit;
 `
 
+// const ErrorSection = styled.div`
+//   color: red;
+// `;
+
 const Register = () => {
+    let navigate = useNavigate();
     const [userInfo, setUserInfo] = useState({
         firstName: "",
         lastName: "",
         email: "",
         password: "",
-        passwordConfirmation: "",
     })
 
 
@@ -79,6 +83,19 @@ const Register = () => {
         }));
         console.log(userInfo);
     }
+
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+        let res = await fetch('http://localhost:8082/users', {
+          method: "POST",
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(userInfo)
+        })
+        
+        navigate('/home');
+        console.log(res);
+        
+      }
 
     // // Handling the form submission
     // const handleSubmit = () => {
@@ -99,7 +116,7 @@ const Register = () => {
         <FormTitle>Register</FormTitle>
         <RegisterContainer>
         
-            <form>
+            <form onSubmit={handleSubmit}>
                 <InputSection>
                     <label htmlFor="">First Name</label>
                     <input type="text" id="firstName" placeholder="First Name" maxLength="25"
@@ -133,7 +150,7 @@ const Register = () => {
             </form>
             
         </RegisterContainer>
-        <div>Already have an account?<Link to="/signin">Login Here</Link></div>
+        <div>Already have an account? <Link to="/signin">Login Here</Link></div>
     </PageContainer>
     
 
