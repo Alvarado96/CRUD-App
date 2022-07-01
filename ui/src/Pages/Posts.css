@@ -6,3 +6,8 @@ body {
 	justify-content: center;
 	align-items: center;
 }
+
+p {
+	border-style: solid;
+	border-color: black;
+}

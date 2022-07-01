@@ -68,6 +68,7 @@ app.post("/users", (request, response, next) => {
    
  })
 
+ 
  app.post("/signin", (request, response, next) => {
     knex("users")
     .where({username: request.body.username})
@@ -104,7 +105,7 @@ app.get('/', (request, response) => {
 app.get('/posts/:id', (request, response) => {
     let currentPosts = knex('posts')
     .join('users', 'users.id', '=', 'posts.id_user')
-    .select('posts.content', 'posts.title')
+    .select('posts.id', 'posts.content', 'posts.title')
     .where('posts.id_user', '=', parseInt(request.params.id))
     .then(data => {
       if(data.length >= 1) {
@@ -114,6 +115,69 @@ app.get('/posts/:id', (request, response) => {
        }
     })
 
+})
+
+// Get a specific blog from a certain user
+app.get('/:userid/blog/:blogid', (request, response) => {
+   knex('posts')
+   .join('users', 'users.id', '=', 'posts.id_user')
+   .select('posts.id', 'posts.content', 'posts.title')
+   .where('posts.id_user', '=', parseInt(request.params.userid))
+   .andWhere('posts.id', '=', parseInt(request.params.blogid))
+   .then(data => {
+      if(data.length >= 1) {
+         response.status(200).json(data)
+      } else {
+         response.status(404).send(`id: ${request.params.blogid} doesnt exist for this user`)
+       }
+    })
+})
+
+app.get('/:userid/blog/:blogid', (request, response) => {
+   knex('posts')
+   .join('users', 'users.id', '=', 'posts.id_user')
+   .select('posts.id', 'posts.content', 'posts.title')
+   .where('posts.id_user', '=', parseInt(request.params.userid))
+   .andWhere('posts.id', '=', parseInt(request.params.blogid))
+   .then(data => {
+      if(data.length >= 1) {
+         response.status(200).json(data)
+      } else {
+         response.status(404).send(`id: ${request.params.blogid} doesnt exist for this user`)
+       }
+    })
+})
+
+app.delete('/:userid/blog/:blogid', (request, response) => {
+   knex('posts')
+   .where('id', '=', parseInt(request.params.blogid))
+   .del()
+   .then((data) => {
+      response.status(200).json(`Number of records deleted: ${data}`);
+    })
+})
+
+app.patch('/:userid/blog/:blogid', (request, response) => {
+
+   let keys = ['title', 'content'];
+   let body = request.body;
+   let validRequest = false;
+
+   if(body[keys[0]]) {
+      validRequest = true;
+   }
+
+   if(validRequest){
+      knex('posts')
+      .where('id', '=', parseInt(request.params.blogid))
+      .update(request.body, keys)
+      .then((data) => {
+         response.status(200).json(`Number of records updated: ${data}`);
+       })
+
+   } else {
+      response.status(404).send('Update was not valid');
+   }
 })
 
 module.exports = app;

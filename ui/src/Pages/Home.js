@@ -20,6 +20,11 @@ const Home = () => {
         navigate(`/${id}/create`)
     }
 
+    const clickView = (post_id) => {
+        navigate(`/${id}/blog/${post_id}`)
+        //console.log(title);
+    }
+
     return (
         <>
         <button onClick={clickHandler}>Create New Blog Post</button>
@@ -28,7 +33,8 @@ const Home = () => {
                 {posts.map((post, index) => {
                     return (<div key={index} className="post-container">
                     <h1 className="heading">{post.title}</h1>
-                    <p>{post.content}</p>
+                    <p maxLength='100' >{post.content}</p>
+                    <button onClick={() => clickView(post.id)}>View</button>
                     </div>)
                 })}
             </div>
