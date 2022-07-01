@@ -37,6 +37,37 @@ app.post("/users", (request, response, next) => {
     })
  })
 
+ // Adding a new Post/Blog
+ app.post("/blogs", (request, response) => {
+   let body = request.body;
+   let key = ['title']
+
+   let validRequest = false;
+
+   if(body[key[0]]) {
+      validRequest = true;
+    }
+
+   if(validRequest) {
+      knex('posts')
+      .insert(request.body)
+      .returning('id')
+      .then((ids) => {
+         knex('posts')
+         .select('*')
+         .where('id', '=', ids[0].id)
+         .then(data => {
+           response.status(200).json(data);
+         })
+       })
+   }
+   else {
+      console.log(`post for blog failed, body: `, request.body)
+      response.status(404).send('Add was not valid');
+    }
+   
+ })
+
  app.post("/signin", (request, response, next) => {
     knex("users")
     .where({username: request.body.username})
