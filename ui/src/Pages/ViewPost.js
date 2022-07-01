@@ -15,7 +15,9 @@ const ViewPost = () => {
     useEffect(() => {
         fetch(`http://localhost:8082/${userid}/blog/${blogid}`)
         .then(response => response.json())
-        .then(data => setPosts(data))
+        .then(data => {
+            setPosts(data);
+        })
         .catch(err => console.log(err))
     })
 
@@ -32,6 +34,7 @@ const ViewPost = () => {
 
     const handleToggle = () => {
         setIsToggled(!isToggled)
+        setInput(posts[0])
     }
 
     const handleChange = (e) => {
@@ -43,9 +46,29 @@ const ViewPost = () => {
             ...currentState,
             [id]: innerText,
         }));
-        console.log(input)
+        console.log("After set input", input);
         e.preventDefault();
-      }
+    }
+
+    const handleSubmit = async (event) => {
+        
+        console.log("input", input.title)
+        console.log("content", input.content)
+        //console.log(posts[0])
+        event.preventDefault()
+        
+        let res = await fetch(`http://localhost:8082/${userid}/blog/${blogid}`, {
+            method: "PATCH",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(input)
+        });
+       console.log('Submitted successfully!')
+       console.log(res)
+       //navigate(lastLocation)
+
+    }
+
+    
   
     return (
         <>
@@ -53,11 +76,12 @@ const ViewPost = () => {
             <h1>Blogger Home</h1>
             <div className="posts-container">
                 {posts.map((post, index) => {
+                    
                     return (<div key={index} className="post-container">
                     <h1 onInput={handleChange} id="title" suppressContentEditableWarning={true} contentEditable={isToggled} className="heading">{post.title}</h1>
                     <p onInput={handleChange} id="content" suppressContentEditableWarning={true} contentEditable={isToggled}>{post.content}</p>
                     
-                    {isToggled ? <button>Submit</button>: <button onClick={() => deleteClick(post.id)}>Delete</button>}
+                    {isToggled ? <button onClick={handleSubmit}>Submit</button>: <button onClick={() => deleteClick(post.id)}>Delete</button>}
                     </div>)
                 })}
             </div>

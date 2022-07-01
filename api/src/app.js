@@ -163,9 +163,13 @@ app.patch('/:userid/blog/:blogid', (request, response) => {
    let body = request.body;
    let validRequest = false;
 
-   if(body[keys[0]]) {
+   if(body[keys[0]] || body[keys[1]]) {
       validRequest = true;
    }
+
+   // if(body.title ==='' || body.content ==='') {
+   //    validRequest = false;
+   // }
 
    if(validRequest){
       knex('posts')
