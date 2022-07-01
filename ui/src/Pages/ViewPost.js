@@ -6,6 +6,10 @@ const ViewPost = () => {
     let [posts, setPosts] = useState([]);
     let { userid, blogid} = useParams();
     let [isToggled, setIsToggled] = useState(false);
+    let [input, setInput] = useState({
+        title: "",
+        content: ""
+    });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -30,6 +34,19 @@ const ViewPost = () => {
         setIsToggled(!isToggled)
     }
 
+    const handleChange = (e) => {
+        const { id, innerText } = e.target
+        
+        console.log('id', id);
+        console.log('value', innerText)
+        setInput((currentState) => ({
+            ...currentState,
+            [id]: innerText,
+        }));
+        console.log(input)
+        e.preventDefault();
+      }
+  
     return (
         <>
             <button onClick={handleToggle}>Edit</button>
@@ -37,8 +54,8 @@ const ViewPost = () => {
             <div className="posts-container">
                 {posts.map((post, index) => {
                     return (<div key={index} className="post-container">
-                    <h1 suppressContentEditableWarning={true} contentEditable={isToggled} className="heading">{post.title}</h1>
-                    <p suppressContentEditableWarning={true} contentEditable={isToggled}>{post.content}</p>
+                    <h1 onInput={handleChange} id="title" suppressContentEditableWarning={true} contentEditable={isToggled} className="heading">{post.title}</h1>
+                    <p onInput={handleChange} id="content" suppressContentEditableWarning={true} contentEditable={isToggled}>{post.content}</p>
                     
                     {isToggled ? <button>Submit</button>: <button onClick={() => deleteClick(post.id)}>Delete</button>}
                     </div>)
